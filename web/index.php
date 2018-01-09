@@ -2,6 +2,9 @@
 
 require('../vendor/autoload.php');
 
+$dotenv = new \Dotenv\Dotenv(__DIR__. '/..');
+$dotenv->load();
+
 $app = new Silex\Application();
 $app['debug'] = true;
 
@@ -16,6 +19,10 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 // Our web handlers
+
+$app->get('/var', function() {
+    return 'Env var is :'. getenv('TESTVAR');
+});
 
 $app->get('/', function() use($app) {
   $app['monolog']->addDebug('logging output.');
